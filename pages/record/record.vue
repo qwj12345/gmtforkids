@@ -12,7 +12,7 @@
 		<!--  -->
 	  <view class="integralpage">
 		  <view class="integral-header">
-				<!-- 出发币赚取 -->
+				<!-- 奖学金赚取 -->
 			  <view class="get-integral" @click="tabHeader(1)">
 				  <view class="integral-img">
 					  <img :src="isGetIntegral?'/static/images/integral_icon1_active.png':'/static/images/integral_icon1.png'"/>
@@ -21,7 +21,7 @@
 					  奖学金明细
 				  </view>
 			  </view>
-			  <!-- 出发币兑换 -->
+			  <!-- 奖学金兑换 -->
 			  <view class="put-integral"  @click="tabHeader(2)">
 					<view class="integral-img2">
 					  <img :src="!isGetIntegral?'/static/images/integral_icon2_active.png':'/static/images/integral_icon2.png'"/>
@@ -31,7 +31,7 @@
 					</view>
 			  </view>
 		  </view>
-			<!-- 出发币明细 -->
+			<!-- 奖学金明细 -->
 			<view class="record-container" v-if="isGetIntegral">
 				<view class="table-header">
 					<view class="table-header-item">日期</view>
@@ -122,7 +122,7 @@
 					 size:this.size
 				 }
 	
-				 // 出发币明细
+				 // 奖学金明细
 				 myRequest('/miniProgram/api/integral/list',{data:data}).then(res => {
 					 this.records= res.data.data.content;
 					 // Math.ceil将小数向上转为整数

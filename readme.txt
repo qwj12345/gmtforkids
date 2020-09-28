@@ -19,7 +19,7 @@ Vue.prototype.myRequest = myRequest
 
 js中这样设置upx
 this.cWidth3=uni.upx2px(316);//这里要与样式的宽高对应
-this.cHeight3=uni.upx2px(316);//这里要与样式的宽高对应
+this.cHeight3=uni.upx2px(316);//这里要与样式的宽高对应 
 
 页面导航栏样式在pages.json中设置
 {

@@ -4,7 +4,7 @@
 		<!--  -->
 		  <view class="integralpage">
 			  <view class="integral-header">
-					<!-- 出发币赚取 -->
+					<!-- 奖学金赚取 -->
 				  <view class="get-integral" @click="tabHeader(1)">
 					  <view class="integral-img">
 						  <img :src="isGetIntegral?'/static/images/integral_icon1_active.png':'/static/images/integral_icon1.png'"/>
@@ -13,7 +13,7 @@
 						  赚奖学金
 					  </view>
 				  </view>
-				  <!-- 出发币兑换 -->
+				  <!-- 奖学金兑换 -->
 				  <view class="put-integral"  @click="tabHeader(2)">
 						<view class="integral-img2">
 						  <img  :src="isGetIntegral?'/static/images/integral_icon2.png':'/static/images/integral_icon2_active.png'"/>
@@ -57,7 +57,7 @@
 				</view>
 				<view class="integral-content">
 					<view class="get-integral-title">
-						做任务赚出发币
+						做任务赚奖学金
 					</view>
 					<view class="get-item" v-for="(item,key) in getItems" :key="key">
 						<!--  -->
@@ -108,10 +108,10 @@
 								</view>
 								<!-- trophyIntegral：原价    promotionTrophyIntegral：优惠价-->
 								<view class="del-item-text" v-if="item.promotionTrophyIntegral!==0">
-									{{item.trophyIntegral}}出发币
+									{{item.trophyIntegral}}奖学金
 								</view>
 								<view class="put-item-text">
-									<span v-if="item.promotionTrophyIntegral===0">{{item.trophyIntegral}}</span><span v-if="item.promotionTrophyIntegral!==0">{{item.promotionTrophyIntegral}}</span>出发币
+									<span v-if="item.promotionTrophyIntegral===0">{{item.trophyIntegral}}</span><span v-if="item.promotionTrophyIntegral!==0">{{item.promotionTrophyIntegral}}</span>奖学金
 								</view>
 							</view>
 					  </view>

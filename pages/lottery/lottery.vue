@@ -138,6 +138,8 @@
 				if(!this.lotteringFlag){
 					// 把按钮变灰
 					this.lotteringFlag = true;
+					// 延迟羽毛掉落时间  如果不设延迟掉落时间马上触发动画的话羽毛可能直接出现在托盘上，没有下落的过程
+					let timeOut = 100;
 					this.showPlume = true;
 					// 天平和羽毛颜色样式的变化
 					let leftTop=uni.upx2px(300);//这里要与样式的
@@ -147,11 +149,11 @@
 					let leftLine=uni.upx2px(116);//这里要与样式的
 					let rightLine=uni.upx2px(56);//这里要与样式的
 					let plumeTop=uni.upx2px(400);//这里要与样式的
-					let plumeTop2=uni.upx2px(460);//这里要与样式的
+					let plumeTop2=uni.upx2px(460);//这里要与样式的  
 					// 羽毛开始下落  需要用定时器 因为v-if后没法实现慢慢掉落 直接掉下来了 用定时器后可以实现效果
 					setTimeout(() => {
 						this.$set(this.plumeTop,"top",plumeTop+'px');
-					},1)
+					},timeOut)
 					// 羽毛下落后天枰开始动
 					setTimeout(() => {
 						this.$set(this.leverRotate,"transform",'rotate(15deg)  translate(-50%,0)');
@@ -164,11 +166,13 @@
 						this.$set(this.rightLine,"height",rightLine+'px');
 						this.$set(this.plumeTop,"top",plumeTop2+'px');//羽毛也要跟着下降
 						// console.log(this.rightLine,rightLine)
-					},1001)//1000毫秒是根据羽毛设置的transition: all 1s linear;
+					},1000+timeOut)//1000毫秒是根据羽毛设置的transition: all 1s linear;
 					// 动画完成后调用抽奖接口
 					setTimeout(()=>{
 						this.lotteryRequest();
-					},2001)
+					},2000+timeOut)
+					
+
 				}
 			},
 			// 抽奖
@@ -198,21 +202,22 @@
 						this.$refs.toast.showLoading();
 						this.lotteringFlag = false;
 					}
+					
 					// 天枰复原
-					setTimeout(()=>{
+					setTimeout(()=>{ 
+						this.plumeTop={};
 						this.showPlume = false;
-						
 						this.leverRotate = {};
 						this.redRotate = {};
 						this.leftPan = {};
-						this.plumeTop = {};
 						this.rightPan = {};
 						this.leftLine = {};
 						this.rightLine = {};
-					},1000)
+					},500)
 
 				})
 			},
+			
 			// 获取礼物列表
 			getGifts(){
 				this.swiperId = 0;

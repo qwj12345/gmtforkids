@@ -82,7 +82,7 @@
 					<view class="block">
 						<view class="time">上午</view>
 						<view class="study" v-for="(item,key) in amSubjects" :style="studyColors[key]">{{item}}</view>
-						<!-- 只有上午没有课时 -->
+						<!-- 只有上午没有课时  -->
 						<view class="study" v-if="amSubjects.length===0" style="background: none;">无</view>
 					</view>
 					<view class="block marginTop">
@@ -97,7 +97,7 @@
 					<image src="../../static/images/edit.png" style="height: 100%;"></image>
 				</view>
 			</view>
-			<!-- 当天没有添加任何课程时 -->
+			<!-- 当天没有添加任何课程时-->
 			<view v-else class="hide-class">
 				<image src="../../static/images/no_class.png" ></image>
 				<view  class="text">您还没有添加当天课程哦~</view>
@@ -179,7 +179,7 @@
 			// 当获取到token时触发某些事件
 			isLogin(){
 				if(this.isLogin){
-					if(this.invitationCode !== ""){  //新用户带邀请码进来时 弹出授权框后邀请确认款会消失 所以要重新弹出
+					if(this.invitationCode !== ""){  //新用户带邀请码进来时 弹出授权框后邀请确认框会消失 所以要重新弹出
 						this.$refs.modal.visible = true;
 					}
 					this.getChildren();	
@@ -194,7 +194,7 @@
 		},
 
 		methods: {
-			// 显示授权提示弹框
+			// 显示授权提示弹框 
 			showSQ(){
 				this.$refs.sq.toggle();
 			},
@@ -204,7 +204,6 @@
 			// 
 			goPage(url){
 				if(this.isLogin){
-					console.log()
 					if(url.search('editTable')!==-1 && this.children.length===0){//还没有小孩子时无法编辑课表
 						this.toastTitle = "请先添加小孩";
 						this.toastType = "none";
@@ -417,6 +416,12 @@
 				}
 			}
 		},
+		onShareAppMessage(res) {
+			//转发时携带 shareTicket才能在回调中获取到shareTickets
+			uni.showShareMenu({
+				withShareTicket: true
+			})
+		},
 		onShow(){
 			if(getApp().globalData.subjectFlag===1){
 				getApp().globalData.subjectFlag = 0;
@@ -432,7 +437,7 @@
 			}
 		},
 		onLoad(query) {
-			//邀请码进来
+			//邀请码进来 
 			if(query.code){
 				this.invitationCode = query.code;
 				this.msgText = "<div style='text-align:center'>你是否同被邀请成为共同关注人？</div>";
@@ -440,8 +445,8 @@
 			}
 			
 			_self = this;
-			this.cWidth3=uni.upx2px(316);//这里要与样式的宽高对应
-			this.cHeight3=uni.upx2px(316);//这里要与样式的宽高对应
+			this.cWidth3=uni.upx2px(316); //这里要与样式的宽高对应
+			this.cHeight3=uni.upx2px(316);//这里要与样式的宽高对应  
 			this.arcbarWidth=uni.upx2px(34);
 
 			// 获取天气
@@ -575,7 +580,6 @@
 					height: 28upx;
 				}
 				.choose-modal{
-					
 					position: absolute;
 					background: #fff;
 					width: 100%;

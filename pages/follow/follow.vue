@@ -64,10 +64,9 @@
 					}) 
 				}else{
 					this.toastType = "none";
-					this.toastTitle = "只能添加一个关注者哦";
-					this.$refs.toast.showLoading() // 显示
+					this.toastTitle = "只能添加一个关注者哦！"; 
+					this.$refs.toast.showLoading(); // 显示
 				}
-
 			},
 			// 解绑
 			cancelBind(){

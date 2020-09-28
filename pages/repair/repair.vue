@@ -113,6 +113,9 @@
 			};
 		},
 		methods:{
+			goRule(){
+				
+			},
 			openPosition(){
 				this.showPosition == true ? this.showPosition = false : this.showPosition = true;
 			},
@@ -138,11 +141,11 @@
 				    if(res.data.status === 0){
 				  	this.toastType = "ring";
 				  	this.toastTitle = "上报成功";
-				  	this.$refs.toast.showLoading() // 显示
+				  	this.$refs.toast.showLoading() // 显示 
 				  	setTimeout(()=>{
 				  	  uni.navigateBack()   
 				  	},1500)
-				    }else if(res.data.status === 10037){
+				   }else if(res.data.status === 10037){
 						this.toastType = "none";
 						this.toastTitle = "输入不完整";
 						this.$refs.toast.showLoading() // 显示

@@ -18,12 +18,13 @@
 			  <view class="sel-time" @click="selDate" :class="{'color6':currentDate!=='选择购买日期'}">{{currentDate}}</view>
 		  </view>
 		  <view class="form-text">*仅注册用户需填，上报拾到物不需</view>
-	  </view>
+	  </view> 
 	  <!-- 下方两个按钮 -->
 	  <view class="bootom-l-btn z-btn" @click="regMethod" >注册产品</view>
 	  <view class="s-btn" @click="goDetail">上报拾到物</view>
+	  <!-- <a class="s-btn" href="https://www.baidu.com">正品验证</a> -->
 	  <!-- 日期 -->
-	  <QSpicker title="请选择日期时间" 	mode="bottom"  
+	  <QSpicker title=" " 	mode="bottom"  
 	  	type="date" 
 	  	ref="QS_Picekr_date"
 	  	pickerId="date_1" 
@@ -36,7 +37,7 @@
 		<!-- 提示框 -->
 		<wyb-loading title="请稍后" ref="loading" type="rectangle" bg-color="#ffffff" ft-color="#666666"/>
 		<my-toast :title="toastTitle" ref="toast" :loadingType="toastType" type="rectangle" bg-color="#ffffff" ft-color="#666666"/>
-		<my-modal ref="modal" :msgText="msgText" :showCancel="false" confirmText="确认"></my-modal>
+		<my-modal ref="modal" :msgText="msgText" :showCancel="false"  @confirmAction="bindSuccess" confirmText="确认"></my-modal>
 		<!-- 手机号授权 -->
 		<phone-modal ref="phone"></phone-modal>
 		<!-- 小程序授权 -->
@@ -50,6 +51,7 @@
 	export default {
 		data() {
 			return {
+				bindFlag:false,//为了判断是否绑定成功然后跳转到产品列表页
 				msgText:"",
 				uid:"",
 				toastTitle:"出错啦",
@@ -59,6 +61,7 @@
 				},
 				dateSet: {
 					startYear:new Date().getFullYear() - 15,
+					endYear:new Date().getFullYear(),
 					dateMode: 3,
 					dateFormatArray: ['/', '/', ' ', ':', ':']
 				},
@@ -74,11 +77,25 @@
 			},
 		},
 		methods:{
+			// 
+			goH5(){
+				uni.navigateTo({
+					url:'../h5/h5'
+				})
+			},
 			// 授权框显示
 			showPhone(){
 				this.$refs.phone.toggleModal();
 			},
-			// 扫描二维码的方法
+			// 绑定成功后跳转
+			bindSuccess(){
+				if(this.bindFlag){
+					uni.navigateTo({
+						url:"/pages/bags/bags"
+					})
+				}
+			},
+			// 扫描二维码的方法 
 			scanCode(){
 				let that = this;
 				uni.scanCode({
@@ -115,12 +132,13 @@
 							goodsCode:this.uid,
 							goodsAddTime:this.currentDate
 						}
-						
+						this.bindFlag = false;
 						this.$refs.loading.showLoading() // 显示
 						this.myRequest('/miniProgram/api/goods/binding',{data:data}).then(res => {
 							if(res.data.status === 0){
-								this.msgText = '<div class="reg-text3">产品注册成功，出发币已到账<br/>恭喜您获得终身保修资格</div>';
+								this.msgText = '<div class="reg-text3">产品注册成功，奖学金已到账<br/>恭喜您获得保修资格</div>';
 							    this.$store.dispatch("changeIntegralAction",res.data.data);
+								this.bindFlag = true;
 							}else if(res.data.status === 1){
                                 this.msgText = '<div class="reg-text3">商品已绑定<br/>请勿重复绑定</div>';
                             }else if(res.data.status === 10009){
@@ -147,11 +165,11 @@
 						let data = {
 							goodsCode:this.uid,
 						}
+						this.bindFlag = false;
 						this.$refs.loading.showLoading() // 显示
 						this.myRequest('/miniProgram/api/goods/collect',{data:data}).then(res => {
 							this.$refs.loading.hideLoading() 
 							if(res.data.status === 0){
-								console.log(123)
 								uni.navigateTo({
 									url:'/pages/reportDetail/reportDetail?code='+this.uid
 								})

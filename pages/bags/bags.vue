@@ -61,7 +61,7 @@
 							<img src="https://level8cases.oss-cn-hangzhou.aliyuncs.com/3-86dffe87-6e9b-4793-a580-2fb6c017a8d5.png"/>
 						</view>
 						<view class="option-text">
-							终身保修
+							保修
 						</view>
 					</view>
 
@@ -108,7 +108,6 @@
 				<view v-if="children.length!==0" class="btn" @click="bindChild">确定</view>
 				<view v-if="children.length===0" class="btn" @click="goChild">立即添加</view>
 			</view>
-		
 		</e-modal>
 		<!-- 提示框 -->
 		<wyb-loading title="请稍后" ref="loading" type="rectangle" bg-color="#ffffff" ft-color="#666666"/>
@@ -132,7 +131,7 @@
 				productCode:'',
 				modalType:-1,
 				children:[],
-				childId:''
+				childId:'' //
 				// products:[{open:false,goodsImg:"https://level8cases.oss-cn-hangzhou.aliyuncs.com/矩形5拷贝-9d8d1b40-7ca3-41c0-a2cd-4cae3d1378ef.png",statusName:"正常",goodsAddTime:"2020/05/20",encode:"LA-1688-02T00",repairsType:5}]
 			};
 		},
@@ -143,7 +142,6 @@
 			// 选择孩子单选框事件
 			changeRadio(e){
 				this.childId = parseInt(e.detail.value);
-				console.log(this.childId)
 			},
 			// 跳到添加孩子
 			goChild(){
@@ -310,6 +308,7 @@
 					this.totalPage = Math.ceil(res.data.total/this.size);
 					products.forEach(item => {
 						item.open = false;  //设置产品为未打开的样子
+						item.childName ? item.childName = item.childName : item.childName = "未绑定";
 					})
 					this.products = products;
 				})

@@ -21,7 +21,8 @@
     "pages/classWeight/classWeight",
     "pages/reportDetail/reportDetail",
     "pages/lottery/lottery",
-    "pages/rules/rules"
+    "pages/rules/rules",
+    "pages/h5/h5"
   ],
   "subPackages": [],
   "window": {
@@ -70,6 +71,5 @@
   "uniStatistics": {
     "enable": true
   },
-  "usingComponents": {},
-  "sitemapLocation": "sitemap27.json"
+  "usingComponents": {}
 }

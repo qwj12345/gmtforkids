@@ -1,6 +1,9 @@
 <template>
 	<view id="subject">
-		<view class="title">已添加课程</view>
+		<view class="title">
+			<view>已添加课程</view>
+			<view class="title-desc1">填写重量，可计算儿童当日负重情况</view>
+		</view>
 		<!--  -->
 		<view class="content">
 			<view v-for="(item,key) in list" :key="key" class="item display-between-center">
@@ -31,12 +34,11 @@
 					<input v-model="name" />
 				</view>
 				<view class="item item2">
-					<view>重量:</view>
+					<view>教材重量:</view>
 					<input v-model="weight" type="number"/>
 				</view>
 				<view class="btn" @click="edit">保存</view>
 			</view>
-
 		</e-modal>
 		<!--  -->
 		<my-toast :title="toastTitle" :loadingType="toastType" ref="toast" type="rectangle" bg-color="#ffffff" ft-color="#666666"/>
@@ -86,6 +88,7 @@
 							if(res.data.code===0){
 								this.toastType = "ring";
 								this.toastTitle = "添加成功";
+								getApp().globalData.subjectFlag = 1;//做个标记 让首页课程表刷新
 								this.$refs.toast.showLoading() // 显示
 								this.visible = false;
 								this.getSubject();
@@ -104,12 +107,13 @@
 						this.$refs.loading.showLoading(); // 显示
 						this.myRequest("/gmt/api/gmtChild/gmtClassCard/update",{data}).then(res => {
 							this.$refs.loading.hideLoading(); 
-							console.log(res.data)
+							
 							if(res.data.code===0){
 								this.toastType = "ring";
 								this.toastTitle = "修改成功";
 								this.$refs.toast.showLoading() // 显示
 								this.visible = false;
+								getApp().globalData.subjectFlag = 1;//做个标记 让首页课程表刷新
 								this.getSubject();
 							}else{
 								this.toastType = "error";
@@ -145,7 +149,7 @@
 									this.toastType = "ring";
 									this.toastTitle = "删除成功";
 									this.$refs.toast.showLoading() // 显示
-									
+									getApp().globalData.subjectFlag = 1;//做个标记 让首页课程表刷新
 									this.getSubject();
 								}else{
 									this.toastType = "error";
@@ -161,7 +165,6 @@
 			},
 			// 获取科目
 			getSubject(){
-
 				this.$refs.loading.showLoading(); // 显示
 				this.myRequest("gmt/api/gmtChild/gmtClassCard/selectData").then(res => {
 					this.$refs.loading.hideLoading(); 
@@ -196,7 +199,16 @@ page{
 		 letter-spacing: 2upx;
 		 padding: 30upx 30upx 10upx 30upx;
 		 font-weight: bold;
+		 display: flex;
+		 align-items: center;
+		 .title-desc1{
+			 color: #999;
+			 font-size: 24upx;
+			 font-weight: normal;
+			 margin-left: 30upx;
+		 }
 	 }
+	 
 	 .content{
 			padding: 30upx;
 			.item{
@@ -209,6 +221,8 @@ page{
 				 .name{
 					 font-weight: bold;
 					 letter-spacing: 2upx;
+					 width: 200upx;
+					 overflow: hidden;
 				 }
 				 .weight{
 					 color: #333;
@@ -244,6 +258,10 @@ page{
 			align-items: center;
 			justify-content: center;
 			font-size: 32upx;
+			view{
+				width: 140upx;
+				text-align: right;
+			}
 			input{
 				border: 2upx solid #e2e2e2;
 				border-radius: 40upx;
