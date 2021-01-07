@@ -31,7 +31,6 @@
 							<image class="bag-btn" src="../../static/images/face-right-9.png"></image>
 						</view>
 					</view>
-			
 				</swiper-item>
 			</swiper>
 			<view v-else class="my-bag bag-top">
