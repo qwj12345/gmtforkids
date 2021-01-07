@@ -50,6 +50,11 @@ image {
   line-height: 96rpx;
   box-shadow: 0 4rpx 16rpx 0rpx #ff9b1f;
 }
+.bottom-banner {
+  margin-top: 40rpx;
+  border-radius: 24rpx;
+  overflow: hidden;
+}
 #record .header {
   width: 100vw;
   height: 302rpx;

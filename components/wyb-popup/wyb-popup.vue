@@ -69,6 +69,7 @@
 				eleW: 0,
 				eleH: 0,
 				isShow: false,
+				animation:{},
 				contentAnim: {},
 				maskAnim: {},
 				winReBottom: '',
@@ -84,7 +85,7 @@
 				let result = (((this.h - this.rpxToPx(this.height)) / 2) - navHeight - statusBarHeight - this.negativeTop) + 'px'
 				// #ifdef H5
 				result = ((windowHeight - this.rpxToPx(this.height)) / 2 - this.negativeTop) + 'px'
-				// #endif
+				// #endif  
 				// #ifdef MP-WEIXIN
 				navHeight = wx.getMenuButtonBoundingClientRect().bottom
 				result = ((this.h - this.rpxToPx(this.height)) / 2 - statusBarHeight - navHeight) + 'px'
@@ -328,6 +329,7 @@
 				}, this.duration + 1)
 			},
 			contentIn() {
+				
 				this.animation = uni.createAnimation({
 					duration: this.duration,
 					timingFunction: 'ease-out'
@@ -358,6 +360,11 @@
 				})
 			},
 			contentOut() {
+			
+				this.animation = uni.createAnimation({
+					duration: this.duration,
+					timingFunction: 'ease-out'
+				})
 				switch (this.type) {
 					case 'center':
 						if (this.centerAnim === 'zoom-lessen') {
@@ -386,6 +393,7 @@
 				this.contentAnim = this.animation.export()
 			},
 			maskIn() {
+				
 				this.animation = uni.createAnimation({
 					duration: this.duration,
 					timingFunction: 'ease'
@@ -393,7 +401,11 @@
 				this.animation.opacity(1).step()
 				this.maskAnim = this.animation.export()
 			},
-			maskOut() {
+			maskOut() { 
+				this.animation = uni.createAnimation({
+					duration: this.duration,
+					timingFunction: 'ease'
+				})
 				this.animation.opacity(0).step()
 				this.maskAnim = this.animation.export()
 			},
@@ -412,7 +424,7 @@
 			clear(e) {
 				e.stopPropagation()
 			}
-		}
+		},
 	}
 </script>
 

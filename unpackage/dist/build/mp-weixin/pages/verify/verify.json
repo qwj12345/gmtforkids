@@ -1,0 +1,6 @@
+{
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "my-toast": "/components/my-toast/my-toast"
+  }
+}

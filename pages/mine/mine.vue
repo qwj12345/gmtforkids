@@ -28,7 +28,7 @@
 			return {
 				operates:[
 				  {title:'我的信息',url:'/pages/myInfo/myInfo',img:require('../../static/images/users/user_1.png')},
-				  {title:'儿童信息管理',url:'/pages/children/children',img:require('../../static/images/users/user_2.png')},
+				  // {title:'儿童信息管理',url:'/pages/children/children',img:require('../../static/images/users/user_2.png')},
 				  {title:'我的书包',url:'/pages/bags/bags',img:require('../../static/images/users/user_3.png')},
 				  {title:'兑换记录',url:'/pages/record/record',img:require('../../static/images/users/user_4.png')},
 				  {title:'会员手册',url:'/pages/rules/rules?type=HY',img:require('../../static/images/users/user_5.png')},
@@ -41,6 +41,7 @@
 			  return this.$store.state.login;
 			},
 		},
+		
 		methods:{
 			// 授权框显示
 			showPhone(){

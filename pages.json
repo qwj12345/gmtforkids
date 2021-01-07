@@ -2,16 +2,15 @@
 	"pages": [{
 		"path": "pages/index/index",
 		"style": {
-			"navigationBarTitleText": "GMTforkids会员中心",
+			"navigationBarTitleText": "GMT for Kids会员中心",
 			"navigationBarTextStyle": "white",
-			"navigationBarBackgroundColor": "#F49D1A" 
-		
+			 "navigationStyle":"custom"  //禁用uni-app默认的头部导航
 		}
 	}  
         ,{
             "path" : "pages/welfare/welfare",
             "style": {
-            	"navigationBarTitleText": "GMTforkids会员中心",
+            	"navigationBarTitleText": "GMT for Kids会员中心",
             	"navigationBarTextStyle": "white",
             	"navigationBarBackgroundColor": "#F49D1A"
             	
@@ -24,7 +23,7 @@
         ,{
             "path" : "pages/mine/mine",
             "style": {
-            	"navigationBarTitleText": "GMTforkids会员中心",
+            	"navigationBarTitleText": "GMT for Kids会员中心",
             	"navigationBarTextStyle": "white",
             	"navigationBarBackgroundColor": "#F49D1A"
             
@@ -60,13 +59,13 @@
             }
         }
         ,{
-            "path" : "pages/register/register",
+            "path" : "pages/registerOut/registerOut",
             "style" : {}
         }
         ,{
             "path" : "pages/integral/integral",
             "style": {
-            	"navigationBarTitleText": "GMTforkids会员中心",
+            	"navigationBarTitleText": "GMT for Kids会员中心",
             	"navigationBarTextStyle": "white",
             	"navigationBarBackgroundColor": "#F49D1A"
             	
@@ -136,14 +135,34 @@
             "style" : {}
         }
         ,{
-            "path" : "pages/h5/h5",
-            "style" : {}
+            "path" : "pages/register/register",
+            "style" : {
+				"navigationBarTitleText": "正品验证",
+				"navigationBarTextStyle": "white",
+				"navigationBarBackgroundColor": "#F49D1A"
+			}
+        }
+        ,{
+            "path" : "pages/verify/verify",
+            "style" :                                                                                    
+            {
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/productDetail/productDetail",
+            "style" :                                                                                    
+            {
+				"navigationBarTitleText": "书包详情"
+            }
+            
         }
     ],
 
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "GMTforkids会员中心",
+		"navigationBarTitleText": "GMT for Kids会员中心",
 		"navigationBarBackgroundColor": "#FFFFFF",
 		"backgroundColor": "#FFFFFF"
 	},
@@ -159,16 +178,16 @@
 				"text": "首页"
 			},
 			{
-					"pagePath": "pages/welfare/welfare",
+					"pagePath": "pages/verify/verify",
 					"iconPath": "static/images/tabbars/tabbar2.png",
 					"selectedIconPath": "static/images/tabbars/tabbar2_active.png",
-					"text": "会员福利"
+					"text": "正品验证"
 				},
 			{
-					"pagePath": "pages/children/children",
+					"pagePath": "pages/registerOut/registerOut",
 					"iconPath": "static/images/tabbars/tabbar3.png",
 					"selectedIconPath": "static/images/tabbars/tabbar3_active.png",
-					"text": "我的孩子"
+					"text": "激活质保"
 			},
 			{
 					"pagePath": "pages/mine/mine",

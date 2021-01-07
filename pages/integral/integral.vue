@@ -89,7 +89,7 @@
 					<view v-if="showGZH" class="official-account" >
 						<official-account  @error='errorLoad'></official-account>
 						<view v-show="errorOfficial" class="official-error">
-							请在微信搜索“GMTforkids”关注公众号，即可完成任务~~
+							请在微信搜索“GMT for Kids”关注公众号，即可完成任务~~
 						</view>
 					</view>
 			  </view>
@@ -99,7 +99,7 @@
 					<view class="put-item" v-for="(item,key) in putItems" :key="key">
 					  <!--  -->
 					  <view class="put-left">
-						  <view class="put-item-img">
+						  <view class="put-item-img" @click="preImage(item.trophyImg)">
 							  <img :src="item.trophyImg"/>
 						  </view>
 							<view class="put-item-content">
@@ -119,8 +119,8 @@
 					  <view v-if="item.integralStatus==='000000'" class="get-btn" @click="showMseeage(item)">
 						  兑换
 					  </view>
-					  <view v-if="item.integralStatus==='000002'" class="get-btn" style="background:#ddd;color:#999;font-size:12px">
-						  积分不足
+					  <view v-if="item.integralStatus==='000002'" class="get-btn" style="background:#ddd;color:#999;">
+						  奖学金不足
 					  </view>
 					  <view v-if="item.integralStatus==='000001'" style="width:60px">
 						  <img src="https://level8cases.oss-cn-hangzhou.aliyuncs.com/sale_over-987e55f6-7e76-490a-a526-dc31692593aa.png" mode='widthFix'/>
@@ -145,7 +145,7 @@
 				isGetIntegral:true,
 				getItems:[
 					{imgUrl:require('../../static/images/tasks/task_1.png'),title:'完善个人信息',text:'完善个人信息得50奖学金',success:false,url:'/pages/myInfo/myInfo'},
-					{imgUrl:require('../../static/images/tasks/task_2.png'),title:'问卷调查',text:'填写问卷调查得50奖学金',success:false,url:'/pages/comingsoon/comingsoon'},
+					// {imgUrl:require('../../static/images/tasks/task_2.png'),title:'问卷调查',text:'填写问卷调查得50奖学金',success:false,url:'/pages/comingsoon/comingsoon'},
 					{imgUrl:require('../../static/images/tasks/task_3.png'),title:'精选文章 ',text:'留言互动，每篇得50奖学金',success:false,url:'/pages/message/message?type=1'},
 					{imgUrl:require('../../static/images/tasks/task_4.png'),title:'关注公众号',text:'关注公众号得200奖学金',success:false,url:''},
 		
@@ -195,6 +195,13 @@
 					})
 				}
 				}).exec()
+			},
+			// 预览图片
+			preImage(url){
+				let urls = [url]
+				uni.previewImage({
+				    urls: urls,
+				});
 			},
 			// 切换
 			tabHeader(index){
@@ -279,6 +286,7 @@
 						this.toastType = "ring";
 						this.toastTitle = res.data.msg;
 						this.$refs.toast.showLoading() // 显示
+						this.getGift();
 						this.$store.dispatch("changeIntegralAction",res.data.integralNum);
 					}else{
 						this.toastType = "none";
@@ -324,9 +332,9 @@
 			getTaskList(){
 				this.myRequest('/miniProgram/api/notification/task').then(res => {
 					this.getItems[0].success = res.data.data.userInfo;
-					this.getItems[1].success = res.data.data.questionnaire;
-					this.getItems[2].success = res.data.data.article;
-					this.getItems[3].success = res.data.data.followWeChat;
+					// this.getItems[1].success = res.data.data.questionnaire;
+					this.getItems[1].success = res.data.data.article;
+					this.getItems[2].success = res.data.data.followWeChat;
 
 					// 获取完任务列表后在获取兑换列表  分步获取
 					this.getGift();
@@ -486,7 +494,7 @@
 		}
 		.put-left{
 		    display: flex;
-		    width: calc(100% - 120upx);
+		    width: calc(100% - 130upx);
 		}
 		.put-item-img{
 		    width: 210upx;
@@ -554,6 +562,18 @@
 		    font-size: 24upx;
 		    border-radius: 30upx;
 			color: #fff;
+		}
+		.put-integral-content{
+			.get-btn{
+			    .back-btn-color();
+			    width: 120upx;
+			    height: 58upx;
+			    line-height: 58upx;
+			    text-align: center;
+			    font-size: 20upx;
+			    border-radius: 30upx;
+				color: #fff;
+			}
 		}
 		.after-get-btn{
 		    background: #efefef;

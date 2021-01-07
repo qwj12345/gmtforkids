@@ -1,0 +1,81 @@
+._img,
+image {
+  width: 100%;
+  display: block;
+}
+.fix-img {
+  background: url('https://level8cases.oss-cn-hangzhou.aliyuncs.com/top-5917d0a2-c0ba-4e3d-9fea-c3c584757350.jpg');
+  height: 536rpx;
+  background-size: cover;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  z-index: 0;
+}
+.header-user {
+  background: #fff;
+  border-top-left-radius: 30rpx;
+  border-top-right-radius: 30rpx;
+  height: 160rpx;
+  position: relative;
+  z-index: 2;
+  margin-top: 510rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  padding: 0 32rpx;
+}
+.header-user .user-info {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.header-user .user-info .user-avatar {
+  width: 112rpx;
+  height: 112rpx;
+  box-shadow: 0 0 20rpx 10rpx #dedede;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 20rpx;
+}
+.header-user .user-info .user-text .user-name {
+  font-size: 36rpx;
+  margin-bottom: 4rpx;
+}
+.header-user .user-info .user-text .user-integral {
+  color: #ff581e;
+  font-size: 30rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+.header-user .user-info .user-text .user-integral view {
+  font-size: 20rpx;
+  -webkit-align-self: flex-end;
+          align-self: flex-end;
+  padding-bottom: 4rpx;
+  margin-right: 4rpx;
+}
+.header-user .user-btn {
+  color: #fff;
+  font-size: 30rpx;
+  background: -webkit-linear-gradient(left, #ffa929, #ff831f);
+  background: linear-gradient(left, #ffa929, #ff831f);
+  width: 134rpx;
+  height: 66rpx;
+  line-height: 66rpx;
+  border-radius: 32rpx;
+  text-align: center;
+  letter-spacing: 2rpx;
+}
+

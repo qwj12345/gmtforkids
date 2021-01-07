@@ -1,43 +1,45 @@
 <template>
-	<view class="register">
-	  <view class="question" >
-		  <image src="/static/images/question.png"></image>
-	  </view>
-	  <!-- scan -->
-	  <view class="scan-code">
-		  <view class="scan-img">
-			  <img src="/static/images/scan.png" @click="scanCode"/>
-		  </view>
-		  <view>扫描产品二维码</view>
-	  </view> 
-	  <!--输入序列号和日期 -->
-	  <view class="form">
-		  <input class="input" placeholder="输入产品序列号" v-model="uid"/>
-		  <view class="input-time input">
-			  <view class="time-title">购买日期</view>
-			  <view class="sel-time" @click="selDate" :class="{'color6':currentDate!=='选择购买日期'}">{{currentDate}}</view>
-		  </view>
-		  <view class="form-text">*仅注册用户需填，上报拾到物不需</view>
-	  </view> 
-	  <!-- 下方两个按钮 -->
-	  <view class="bootom-l-btn z-btn" @click="regMethod" >注册产品</view>
-	  <view class="s-btn" @click="goDetail">上报拾到物</view>
-	  <!-- <a class="s-btn" href="https://www.baidu.com">正品验证</a> -->
-	  <!-- 日期 -->
-	  <QSpicker title=" " 	mode="bottom"  
-	  	type="date" 
-	  	ref="QS_Picekr_date"
-	  	pickerId="date_1" 
-	  	:dataSet="dateSet" 
-	  	showReset
-	  	:autoHide="true"
-	  	contentColor="#333333"
-	  	:lineHeight=".05" :buttonSet="buttonSet"
-	  	@confirm="confirmDate" />
+	<view id="verify">
+		<image class="verify-top" src="../../static/images/bg_img.png"></image>
+		<view class="verify-content" v-if="result">
+			<view class="result">
+				<view class="content" v-if="result.queryNum <= 5">
+					<image src="../../static/images/result_right.png"></image>
+					<view>您好！您所查询的产品为GMT for Kids正品，3年质保已激活，注册会员后即享质保服务。</view>
+				</view>
+				<view class="content" v-else>
+					<image src="../../static/images/result_error.png"></image>
+					<view>您好！该防伪码已被多次查验，您购买的可能不是正品，有任何疑问可致电400-809-6708。</view>
+				</view>
+				<view class="verify-num">此产品被查询{{result.queryNum}}次</view>
+			</view>
+			<!-- product -->
+			<view class="product" v-if="result.miniProgramGoods">
+				<image :src="result.miniProgramGoods.goodsImg" mode="widthFix"></image>
+				<view class="info">
+					<view>品名：{{result.miniProgramGoods.goodsName}}</view>
+					<view>颜色：{{result.miniProgramGoods.color}}</view>
+				</view>
+			</view>
+			<view class="bind">  
+				<view class="title">绑定享质保</view>
+				<view class="info">
+					<view>ID序列号：{{result.encode}}</view>
+					<view>激活时间：{{result.queryFirstTime}}</view>
+				</view>
+				<view class="btn back-btn-color" @click="bind">注册绑定</view>
+			</view>
+			<!-- 底部广告位  -->
+			<view class="bottom-banner" @click="goPage('/pages/articleDetail/articleDetail?url='+encodeURIComponent('https://mp.weixin.qq.com/s/vHC1tpB29QEtmUbrLEhAHA')+'&id=5')">
+				<image src="https://level8cases.oss-cn-hangzhou.aliyuncs.com/footer-7d6fbc22-8527-4f25-83be-53b809698937.jpg" mode="widthFix"></image>
+			</view>
+
+		</view>
 		<!-- 提示框 -->
-		<wyb-loading title="请稍后" ref="loading" type="rectangle" bg-color="#ffffff" ft-color="#666666"/>
+		<wyb-loading :title="loadingTitle" ref="loading" type="rectangle" bg-color="#ffffff" ft-color="#666666"/>
 		<my-toast :title="toastTitle" ref="toast" :loadingType="toastType" type="rectangle" bg-color="#ffffff" ft-color="#666666"/>
-		<my-modal ref="modal" :msgText="msgText" :showCancel="false"  @confirmAction="bindSuccess" confirmText="确认"></my-modal>
+		<my-modal ref="modal" :msgText="msgText" :showCancel="false"  confirmText="确定"></my-modal>
+		
 		<!-- 手机号授权 -->
 		<phone-modal ref="phone"></phone-modal>
 		<!-- 小程序授权 -->
@@ -46,30 +48,15 @@
 </template>
 
 <script>
-	import QSpicker from '@/components/QuShe-picker/QuShe-picker.vue';
-	import {myRequest} from "../../common/common.js"
 	export default {
 		data() {
 			return {
-				bindFlag:false,//为了判断是否绑定成功然后跳转到产品列表页
-				msgText:"",
-				uid:"",
-				toastTitle:"出错啦",
-				toastType:"error",
-				buttonSet:{
-					confirmColor:"rgb(244,157,26)"
-				},
-				dateSet: {
-					startYear:new Date().getFullYear() - 15,
-					endYear:new Date().getFullYear(),
-					dateMode: 3,
-					dateFormatArray: ['/', '/', ' ', ':', ':']
-				},
-				currentDate:"选择购买日期"
+				msgText:'',
+				toastTitle:'',
+				loadingTitle:'验证中',
+				result:null,
+				uid:0
 			};
-		},
-		components: {
-			QSpicker
 		},
 		computed:{
 			isLogin() {
@@ -77,228 +64,174 @@
 			},
 		},
 		methods:{
-			// 
-			goH5(){
-				uni.navigateTo({
-					url:'../h5/h5'
-				})
-			},
-			// 授权框显示
 			showPhone(){
 				this.$refs.phone.toggleModal();
 			},
-			// 绑定成功后跳转
-			bindSuccess(){
-				if(this.bindFlag){
-					uni.navigateTo({
-						url:"/pages/bags/bags"
-					})
-				}
+			// 显示授权提示弹框  
+			showSQ(){
+				this.$refs.sq.toggle();
 			},
-			// 扫描二维码的方法 
-			scanCode(){
-				let that = this;
-				uni.scanCode({
-					success (res) {
-						console.log(res)
-						if(res.path!==undefined){
-							that.toastType = "ring";
-							that.toastTitle = "扫码成功";
-							that.$refs.toast.showLoading() // 显示
-							that.uid = res.path.split('=')[1];//截取产品序列号
-						} else{ 
-							that.toastType = "none";
-							that.toastTitle = "请扫描带序列号二维码";
-							that.$refs.toast.showLoading() // 显示
-						}
-					},
-					fail(err){
-						that.toastType = "error";
-						that.toastTitle = "扫码失败";
-						that.$refs.toast.showLoading() // 显示
-						console.log('err',err)
+			// 
+			goPage(url){
+				uni.navigateTo({
+					url
+				})
+			},
+			// 验证
+			verify(id){
+				
+				this.$refs.loading.showLoading() // 显示
+				this.myRequest('/gmt/api/good/findAntiCounterfeitingInfo',{data:{encode:id}}).then(res => {
+					this.$refs.loading.hideLoading()
+					if(res.data.code === 0){
+						res.data.data.queryFirstTime = res.data.data.queryFirstTime.split(' ')[0];
+						this.result = res.data.data;
+					}else{
+						this.toastType = "error";
+						this.toastTitle = "系统出错"+res.data.code;
+						this.$refs.toast.showLoading() // 显示
 					}
 				})
 			},
-			// 注册
-			regMethod(){
+			// 绑定
+			bind(){
 				if(this.isLogin){
-					if(this.uid ==='' || this.currentDate === '选择购买日期'){
-						this.toastType = "none";
-						this.toastTitle = "请输入序列号和日期";
-						this.$refs.toast.showLoading() // 显示
-					}else{
-						let data = {
-							goodsCode:this.uid,
-							goodsAddTime:this.currentDate
-						}
-						this.bindFlag = false;
-						this.$refs.loading.showLoading() // 显示
-						this.myRequest('/miniProgram/api/goods/binding',{data:data}).then(res => {
-							if(res.data.status === 0){
-								this.msgText = '<div class="reg-text3">产品注册成功，奖学金已到账<br/>恭喜您获得保修资格</div>';
-							    this.$store.dispatch("changeIntegralAction",res.data.data);
-								this.bindFlag = true;
-							}else if(res.data.status === 1){
-                                this.msgText = '<div class="reg-text3">商品已绑定<br/>请勿重复绑定</div>';
-                            }else if(res.data.status === 10009){
-                                this.msgText = '<div class="reg-text3">序列号不正确</div>';
-                            }else{
-                                this.msgText = '<div class="reg-text3">绑定失败</div>';
-                            }
-							this.$refs.loading.hideLoading() // 
+					this.$refs.loading.showLoading() // 显示
+					this.myRequest('/gmt/api/good/binding',{data:{encode:this.uid}}).then(res => {
+						this.$refs.loading.hideLoading()
+						if(res.data.code === 0){
+							this.msgText = `<div style='text-align:center'>绑定成功！您可开始享受质保服务。</div>`;
 							this.$refs.modal.toggleModal();
-						})
-					}
-				}else{
-					this.$refs.sq.toggle();
-				}
-			},
-			// 前往上报
-			goDetail(){
-				if(this.isLogin){
-					if(this.uid ===''){
-						this.toastType = "none";
-						this.toastTitle = "请输入序列号";
-						this.$refs.toast.showLoading() // 显示
-					}else{
-						let data = {
-							goodsCode:this.uid,
+						}else if(res.data.code === 601){
+							this.msgText = `<div style='text-align:center'>绑定失败！该序列码不存在！</div>`;
+							this.$refs.modal.toggleModal();
+						}else if(res.data.code === 602){
+							this.msgText = `<div style='text-align:center'>经查验，是您的绑定产品，正在享受质保服务。</div>`;
+							this.$refs.modal.toggleModal();
+						}else if(res.data.code === 603){
+							this.msgText = `<div style='text-align:center'>经查验，是您的绑定产品，但已超过质保服务期。</div>`;
+							this.$refs.modal.toggleModal();
+						}else if(res.data.code === 604){
+							this.msgText = `<div style='text-align:center'>经查验，当前产品已被其他账号绑定</div>`;
+							this.$refs.modal.toggleModal();
+						}else{
+							this.toastType = "error";
+							this.toastTitle = "系统出错"+res.data.code;
+							this.$refs.toast.showLoading() // 显示
 						}
-						this.bindFlag = false;
-						this.$refs.loading.showLoading() // 显示
-						this.myRequest('/miniProgram/api/goods/collect',{data:data}).then(res => {
-							this.$refs.loading.hideLoading() 
-							if(res.data.status === 0){
-								uni.navigateTo({
-									url:'/pages/reportDetail/reportDetail?code='+this.uid
-								})
-							}else if(res.data.status === 10009){
-								this.msgText = '<div class="reg-text3">不存在该序列号！</div>';
-								this.$refs.modal.toggleModal();
-							}
-							else if(res.data.status === 10013){
-								this.msgText = '<div class="reg-text3">请勿上报自己产品！</div>';
-								this.$refs.modal.toggleModal();
-							}
-							else if(res.data.status === 10011){
-								this.msgText = '<div class="reg-text3">该产品未绑定小程序<br/>请通过其他途径联系失主</div>';
-								this.$refs.modal.toggleModal();
-							}else{
-								this.msgText = '<div class="reg-text3">系统出错<br/>请稍后再试</div>';
-								this.$refs.modal.toggleModal();
-							}
-							
-							
-						})
-					}
+					})
 				}else{
-					this.$refs.sq.toggle();
+					this.showSQ();
 				}
-			},
-			// 显示日期选择框
-			selDate(){
-				this.$refs["QS_Picekr_date"].show();
-			},
-			// 选择日期
-			confirmDate(e){
-				this.currentDate = e.data;
-			},
+			}
 		},
-		onLoad(query){
+		onLoad(query) {
 			this.uid = query.scene;
+			this.result = null;
+			this.verify(query.scene)
 		}
 	}
 </script>
 
 <style lang="less">
-	@import url("../../common/common.less");
-	page{
-		background: #fff;
+@import url("../../common/common.less");
+#verify{
+	.verify-top{
+		position: relative;
+		width: 100vw;
+		height: 302upx;
+		z-index: 0;
 	}
-	.register{
-		padding: 40upx 10vw 60upx;
-		.question{
-			position: fixed;
-			top: 24upx;
-			right: 40upx;
-			width: 38upx;
-			height: 38upx;
-		}
-
-		.scan-code{
-			width: 280upx;
+	.verify-content{
+		padding: 0 34upx 50upx;
+		.result{
+			height: 566upx;
+			background: url(https://level8cases.oss-cn-hangzhou.aliyuncs.com/verify-a61f61fb-1b4f-43e3-ae68-4ce29a9d13d5.png);
+			background-size: cover;
+			margin: -38vw auto 0;
+			position: relative;
+			z-index: 2;
+			padding-top: 20upx;
 			display: flex;
 			flex-direction: column;
 			align-items: center;
-			font-size: 30upx;
-			color: @mainColor;
-			letter-spacing: 2upx;
-			margin: 0 auto;
-			margin-bottom: 50px;
-		}
-		.scan-img{
-			width: 150px;
-			height: 150px;
-		}
-		
-		.input{
-			margin-top: 32upx;
-			height: 84upx;
-			padding: 0 36upx;
-			border: 2upx solid rgb(231,231,231);
-			border-radius: 42upx;
-			color: #666;
-			font-size: 24upx;
+			justify-content: center;
 			box-sizing: border-box;
+			.content{
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				margin-bottom: 48upx;
+				image{
+					width: 118upx;
+					height: 118upx;
+					margin-bottom: 60upx;
+				}
+				view{
+					width: 532upx;
+					font-size: 28upx;
+					line-height: 36upx;
+					text-align: center;
+				}
+			}
+			.verify-num{
+				font-size: 24upx;
+				color: #666;
+			}
 		}
-		.input-time{
+		.product{
 			display: flex;
 			align-items: center;
+			background: #fff;
+			border-radius: 24upx;
+			margin-top: 36upx;
+			padding: 40upx;
+			image{
+				width: 150upx;
+				margin-right: 36upx;
+			}
+			.info{
+				font-size: 22upx; 
+				view{
+					line-height: 34upx;
+				}
+			}
 		}
-		.time-title{
-			color: #000;
-			letter-spacing: 2upx;
-			padding-right: 26upx;
-			text-align: center;
-			height: 20px;
-			line-height: 20px;
-			border-right: 1px solid rgb(229,229,229);
-		}
-		.sel-time{
-			padding-left: 20upx;
-			color: #b2b2b2;
-			width: calc(100% - 180upx);
-		}
-		.color6{
-			color: #666;
-		}
-		.form-text{
-			margin-top: 8px;
-			padding-left: 10px;
-			font-size: 10px;
-			color: #b2b2b2;
-		}
-		.input-placeholder{
-			color: #b2b2b2;
-		}
-		.z-btn{
+		.bind{
+			background: #fff;
+			border-radius: 24upx;
+			margin-top: 36upx;
+			padding: 50upx;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
 			margin-bottom: 40upx;
-			margin-top: 100upx;
-		}
-		.s-btn{
-			box-sizing: border-box;
-			border: 2upx solid @mainColor;
-			color: @mainColor;
-			height: 96upx;
-			line-height: 96upx;
-			text-align: center;
-			border-radius: 48upx;
+			.title{
+				font-weight: bold;
+				font-size: 32upx;
+				letter-spacing: 2upx;
+			}
+			.info{
+				margin: 38upx auto 46upx;
+				font-size: 26upx;
+				color: #666;
+				text-align: center;
+				view{
+					line-height: 44upx;
+				}
+			}
+			.btn{
+				width: 312upx;
+				height: 74upx;
+				line-height: 74upx;
+				color: #fff;
+				letter-spacing: 2upx;
+				font-size: 32upx;
+				border-radius: 36upx;
+				text-align: center;
+			}
 		}
 	}
-	.reg-text3{
-		font-size: 28upx;
-		letter-spacing: 2upx;
-		text-align: center;
-	}
+
+}
 </style>

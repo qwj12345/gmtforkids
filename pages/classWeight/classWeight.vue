@@ -84,7 +84,6 @@
 						this.$refs.loading.showLoading(); // 显示
 						this.myRequest("/gmt/api/gmtChild/gmtClassCard/add",{data}).then(res => {
 							this.$refs.loading.hideLoading(); 
-							console.log(res.data)
 							if(res.data.code===0){
 								this.toastType = "ring";
 								this.toastTitle = "添加成功";
@@ -107,7 +106,6 @@
 						this.$refs.loading.showLoading(); // 显示
 						this.myRequest("/gmt/api/gmtChild/gmtClassCard/update",{data}).then(res => {
 							this.$refs.loading.hideLoading(); 
-							
 							if(res.data.code===0){
 								this.toastType = "ring";
 								this.toastTitle = "修改成功";
@@ -128,7 +126,6 @@
 					this.toastTitle = "请填写完整";
 					this.$refs.toast.showLoading() // 显示
 				}
-
 			},
 			// 删除
 			del(id){

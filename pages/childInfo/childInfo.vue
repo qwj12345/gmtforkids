@@ -106,6 +106,15 @@
 				customSet:{
 					itemArray: [
 						[{
+							"name": "小班", //name变量名需与下方steps.steps_1_value相同
+							"value": "X"//可添加多项自定义想要的数据
+						}, {
+							"name": "中班",
+							"value": "Z"
+						}, {
+							"name": "大班",
+							"value": "D"
+						},{
 							"name": "一年级", //name变量名需与下方steps.steps_1_value相同
 							"value": 1 //可添加多项自定义想要的数据
 						}, {
@@ -123,6 +132,15 @@
 						}, {
 							"name": "六年级",
 							"value": 6
+						}, {
+							"name": "初一",
+							"value": 7
+						}, {
+							"name": "初二",
+							"value": 8
+						}, {
+							"name": "初三",
+							"value": 9
 						}],
 			
 					],
@@ -221,7 +239,10 @@
 					if(res.data.code===0){
 						let result = res.data.data;
 						this.grade = result.grade;
-						this.classText = this.customSet.itemArray[0][result.grade-1].name;
+						let obj = this.customSet.itemArray[0].filter(item => { 
+							return item.value+"" === result.grade;
+						})
+						this.classText = obj[0].name;
 						this.height = result.height;
 						this.name = result.name;
 						this.weight = result.weight;

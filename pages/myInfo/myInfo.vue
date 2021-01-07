@@ -16,7 +16,7 @@
 		  </view>
 		  <input placeholder="请输入姓名" v-model="name"  class="input" :disabled="hasEdit"/>
 		</view>
-		<view class="form-item">
+<!-- 		<view class="form-item">
 		  <view class="form-title">
 			<text v-if="!hasEdit" class="colorRed">*</text> 关系
 		  </view>
@@ -24,7 +24,7 @@
 		  <view  v-if="!hasEdit" class="face-right" @click="showDate('QS_Picekr_custom_2')">
 			<img src="/static/images/face-right-9.png"/>
 		  </view>
-		</view>
+		</view> -->
 		<view class="form-item">
 		  <view class="form-title">
 			<text v-if="!hasEdit" class="colorRed">*</text> 性别
@@ -72,7 +72,7 @@
 		</view>
 		<view class="form-item-textarea">
 		  <view class="form-title">
-			详细地址
+			<text v-if="!hasEdit" class="colorRed">*</text> 详细地址
 		  </view>
 		  <textarea v-if="!showTextArea" placeholder="街道门牌信息" v-model="areaDetail" class="textarea" :disabled="hasEdit"/>
 		  <view class="textarea" v-if="showTextArea">
@@ -232,7 +232,7 @@
 				  let data = {
 					name:this.name,
 					userBirthday:this.birthday,
-					relation:this.relase==='父亲'?1:2,
+					// relation:this.relase==='父亲'?1:2,
 					sex:this.gender==='男'?1:0,
 					userPhone:this.phone,
 					userAddress:this.area,
@@ -275,13 +275,13 @@
 			  }else{
 				this.gender = '未知';
 			  }
-			  if(userInfo.relation === 1) {
-			  	this.relase = '父亲';
-			  }else if(userInfo.sex === 2){
-			  	this.relase = '母亲';
-			  }else{
-			  	this.relase = '';
-			  }
+			  // if(userInfo.relation === 1) {
+			  // 	this.relase = '父亲';
+			  // }else if(userInfo.sex === 2){
+			  // 	this.relase = '母亲';
+			  // }else{
+			  // 	this.relase = '';
+			  // }
 			  this.phone = userInfo.userPhone;
 			  if(userInfo.name === '')
 			  {

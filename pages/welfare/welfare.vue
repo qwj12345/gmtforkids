@@ -39,7 +39,7 @@
 				  {title:'独家精选',text:'您将会收到独家精选信息',image:'https://level8cases.oss-cn-hangzhou.aliyuncs.com/3-d8b07684-f860-43d1-b968-add38d04ea11.png',url:'/pages/message/message'},
 				  {title:'新品发布会',text:'每次发布会，邀请年度总奖学金数量前5的会员参与',image:'https://level8cases.oss-cn-hangzhou.aliyuncs.com/4-f47ab062-493e-4880-8273-60e311d6ba9c.png',url:'/pages/comingsoon/comingsoon'},  
 				  {title:'新品体验官',text:'新品上市，征集产品体验官',image:'https://level8cases.oss-cn-hangzhou.aliyuncs.com/5-3c2dc0c0-5c38-4305-938b-d0085594e489.png',url:'/pages/comingsoon/comingsoon'},  
-				  {title:'生日福利',text:'',image:'https://level8cases.oss-cn-hangzhou.aliyuncs.com/6-c0dc31f7-7ae2-4d97-82b6-5a41ca2f3f68.png',url:'/pages/comingsoon/comingsoon'}
+				  {title:'生日福利',text:'点击领取专属生日福利',image:'https://level8cases.oss-cn-hangzhou.aliyuncs.com/6-c0dc31f7-7ae2-4d97-82b6-5a41ca2f3f68.png',url:'/pages/comingsoon/comingsoon'}
 				],
 			};
 		},

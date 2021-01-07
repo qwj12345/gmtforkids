@@ -8,6 +8,7 @@
 		  <view class="modal-btns" >
 			  <view v-if="showCancel" class="cancel" @click="toggleModal">取消</view>
 			  <view class="confirm" @click="confirm" :style="{width:showCancel?'50%':'100%'}">{{confirmText}}</view>
+												<!-- :style="showCancel?'width:50%':'width:100%'" -->
 		  </view>
 		</e-modal>
 	</view>

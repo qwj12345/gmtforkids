@@ -26,14 +26,14 @@ export function timeFormat1(nS,type) {
 			week:`${Z}`	
 		}
 	else if (type===3){
-		return `${Y}/${M}/${D}`; // yyyy-mm-dd
-	}
+		return `${Y}/${M}/${D}`; // yyyy-mm-dd  
+	} 
     else
         return `${M}/${D} ${H}:${minute}`; // mm-dd hh:minute
 }
 
 // -----------------------封装uni.request请求--------------------
-export function myRequest(url,config){
+export function myRequest(url,config){ 
     return new Promise(function(resolve,reject){ 
         let { 
             data = {}, 
@@ -107,34 +107,34 @@ export async function getToken(encryptedData,iv){
 	let result = "";
 	result = await new Promise(function(resolve,reject){ 
 		uni.login({
-		success (res) {
-			if (res.code) {
-			 uni.request({
-					url: global.ip+'miniProgram/api/get/gmt/crm/token', //仅为示例，并非真实的接口地址
-					data: {
-						encryptedData: encryptedData,
-						iv: iv,
-						code:res.code
-					},
-					header: {
-						'content-type': 'application/json' // 默认值
-					},
-					success (res) {
-						if(res.data.status === 0){
-							store.commit("changeLogin",true);
-							uni.setStorageSync('gtoken', res.data.token);
-						}else{
-							store.commit("changeLogin",false);
-							console.log(9869,res.data);
+			success (res) {
+				if (res.code) {
+				 uni.request({
+						url: global.ip+'miniProgram/api/get/gmt/crm/token', //仅为示例，并非真实的接口地址
+						data: {
+							encryptedData: encryptedData,
+							iv: iv,
+							code:res.code
+						},
+						header: {
+							'content-type': 'application/json' // 默认值
+						},
+						success (res) {
+							if(res.data.status === 0){
+								store.commit("changeLogin",true);
+								uni.setStorageSync('gtoken', res.data.token);
+							}else{
+								store.commit("changeLogin",false);
+								console.log(9869,res.data);
+							}
+						
+							resolve(res)
 						}
+					})
 					
-						resolve(res)
-					}
-				})
-				
+				}
 			}
-		}
-	})
+		})
 	})
 
 	return result

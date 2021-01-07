@@ -15,7 +15,7 @@
 				Hi~,<open-data type="userNickName"></open-data>
 			  </view>
 			  <view v-if="!isLogin" class="user-name" @click="Login">
-				点击登录
+				点击登录 
 			  </view>
 			</view>
 			<!-- 积分 -->
@@ -57,7 +57,7 @@
 		  // person() {
 		  //   return this.$store.state.person;
 		  // },
-		 isLogin() {
+			isLogin() {
 			  return this.$store.state.login;
 			},
 		 },

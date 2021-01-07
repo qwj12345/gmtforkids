@@ -25,7 +25,7 @@
 				company:"GMT"
 			}
 			this.myRequest('miniProgram/api/sys/getExplain',{data}).then(res => {
-				this.contentText = res.data.data.content;
+				this.contentText = `<div style="font-size:12px;line-height:20px">${res.data.data.content}</div>`;
 			})
 		}
 	}

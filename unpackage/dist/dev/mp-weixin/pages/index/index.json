@@ -1,11 +1,11 @@
 {
-  "navigationBarTitleText": "GMTforkids会员中心",
+  "navigationBarTitleText": "GMT for Kids会员中心",
   "navigationBarTextStyle": "white",
-  "navigationBarBackgroundColor": "#F49D1A",
+  "navigationStyle": "custom",
   "usingComponents": {
+    "fix-header": "/components/fix-header/fix-header",
     "wyb-loading": "/components/wyb-loading/wyb-loading",
     "my-toast": "/components/my-toast/my-toast",
-    "my-modal": "/components/my-modal/my-modal",
     "phone-modal": "/components/phone-modal/phone-modal",
     "sq-modal": "/components/sq-modal/sq-modal"
   }

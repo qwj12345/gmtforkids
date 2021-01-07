@@ -5,10 +5,10 @@
 			  <view class="form-title">
 				  <span style="color:red;margin-top:2px;margin-right:2px">*</span> 损坏部位
 			  </view>
-			  <input placeholder="请选择损坏部位" v-model="option" class="input marginR10" disabled='true' @click="openPosition"/>
-			  <view class="face-right" @click="openPosition">
+			  <input placeholder="请输入损坏部位" v-model="option" class="input marginR10" />
+			<!--  <view class="face-right" @click="openPosition">
 				  <img :style="{transform:showPosition ? 'rotate(90deg)' : ''}" class="icon-img"  src="/static/images/face-right-9.png"/>
-			  </view>
+			  </view> -->
 			  <!--  -->
 			  <view class="openPosition"  id="openPosition" v-if="showPosition">
 				<view>
@@ -34,7 +34,7 @@
 				<span style="color:red;margin-top:2px;margin-right:2px">*</span>  损坏图片
 			  </view>
 			  <view class="upload">
-				  <view v-if="uploadImgUrl===''" class="upload-border" @click="uploadImg(0)">
+				  <view v-if="uploadImgUrl===''" class="upload-border" @click="uploadImg">
 					  <img  src="/static/images/add.png" mode='widthFix'/>
 				  </view>
 				  <img @click="prevImg" v-if="uploadImgUrl!==''" style="width:80px;height:80px" :src="uploadImgUrl"/>
@@ -44,13 +44,13 @@
 			  </view>
 		  </view>
 		</view>
-		<view class="cut-block"  @click="goRule">
+<!-- 		<view class="cut-block"  @click="goRule">
 		  <img  src="/static/images/repair-q.png" mode='widthFix'/>
 		  内标图在哪看？
 		</view>
-		<!--  -->
+	
 		<view class="form2" >
-				<!--  -->
+			
 		  <view class="form-item-textarea">
 			  <view class="form-title">
 			   <span style="color:red;margin-top:2px;margin-right:2px">*</span>  内标图
@@ -78,7 +78,7 @@
 			  <input v-model="number2" placeholder="请填写内标编码" class="input"/>
 		  </view>
 	
-		</view>
+		</view> -->
 		<!-- 按钮 -->
 		<view class="fix-btn" >
 			<view class="bootom-l-btn" style="margin: 0;" @click="reportRepair">
@@ -101,21 +101,17 @@
 				toastType:'',
 				msgText:"",
 				  uploadImgUrl:'',
-				  uploadImgUrl2:'',
-				  number1:'',
-				  number2:'',
 				  showPosition:false,
 				  product:{},
 				  options:[123,568,789],
 				  option:'',
 				  remark:'',
 				  isGo:false,
+				  id:''
 			};
 		},
 		methods:{
-			goRule(){
-				
-			},
+
 			openPosition(){
 				this.showPosition == true ? this.showPosition = false : this.showPosition = true;
 			},
@@ -127,13 +123,10 @@
 		  confirmReport(){
 			  if(this.isGo){
 				  let data = {
-				    id:this.product.id,
+				    id:this.id,
 				    repairsRtr:this.option,
 				    remake:this.remark,
 				    damageImg:this.uploadImgUrl,
-				    vendorCode:this.number1,
-				    purContractNumber:this.number2,
-				    insideImg:this.uploadImgUrl2
 				  }
 				  this.$refs.loading.showLoading() // 显示
 				  this.myRequest('/miniProgram/api/repairs/add',{data:data}).then(res => {
@@ -143,7 +136,9 @@
 				  	this.toastTitle = "上报成功";
 				  	this.$refs.toast.showLoading() // 显示 
 				  	setTimeout(()=>{
-				  	  uni.navigateBack()   
+				  	  uni.navigateTo({
+				  	  	url:'../bags/bags'
+				  	  })   
 				  	},1500)
 				   }else if(res.data.status === 10037){
 						this.toastType = "none";
@@ -160,29 +155,54 @@
 		  },
 		  // 弹框
 			  reportRepair(){
-				if(this.option !== '' && this.remark !== ''&& this.uploadImgUrl !== ''&& this.uploadImgUrl2 !== ''){
+				if(this.option !== '' && this.remark !== ''&& this.uploadImgUrl !== ''){
 					this.$refs.loading.showLoading() // 显示
-				  this.myRequest('/miniProgram/api/repairs/str').then(res => {
-					  this.isGo = false;
-					if(res.data.status === 0){
-						this.isGo = true;
-					  this.msgText = res.data.data;
-					}else if(res.data.status === 10009 || res.data.status === 99999){
-					  this.msgText = "系统出错";
-					}else{
-					  this.msgText = res.data.msg; 
+				  this.myRequest('/miniProgram/api/repairs/str',{data:{id:this.id}}).then(res => {
+					this.isGo = false;
+					switch(res.data.status){ 
+						case 0:
+							this.isGo = true;
+							this.msgText = res.data.data;
+							break;
+						case 10009:
+						case 99999:
+							this.msgText = "系统出错";
+							break;
+						case 10037:
+							this.isGo = true;
+							this.msgText = `<div style="text-align:center">您好！您的书包已超过3年质保期，请确认是否进行付费修理服务？</div>`;
+							break;
+						case 10030:
+							this.msgText = `<div style="text-align:center">您好！您的个人信息还未完善，请到个人中心先完善个人信息！</div>`;
+							break;
+						default:
+							this.msgText = res.data.msg; 
 					}
+ 
+					// if(res.data.status === 0){
+					// 	this.isGo = true;
+					//   this.msgText = res.data.data;
+					// }else if(res.data.status === 10009 || res.data.status === 99999){
+					//   this.msgText = "系统出错";
+					// }else if(res.data.status === 10037){
+					// 	this.isGo = true;
+					// 	this.msgText = `<div style="text-align:center">您好！您的书包已超过3年质保期，请确认是否进行付费修理服务？</div>`;
+					// }else if(res.data.status === 10030){
+					// 	this.msgText = `<div style="text-align:center">您好！您的个人信息还未完善，请到个人中心先完善个人信息！</div>`;
+					// }else{
+					//   this.msgText = res.data.msg; 
+					// }
 					this.$refs.loading.hideLoading();
 					this.$refs.modal.toggleModal();
 				  })
 				}else{
 				  this.toastType = "none";
 				  this.toastTitle = "请输入完整信息";
-				  this.$refs.toast.showLoading() // 显示
+				  this.$refs.toast.showLoading() // 显示 
 				}
 		
 			  },
-			  uploadImg(type){
+			  uploadImg(){
 				let that = this;
 				uni.chooseImage({
 					count: 1, // 默认9
@@ -200,11 +220,7 @@
 								'Content-Type': 'multipart/form-data' // 默认值
 								},
 								success (res1){
-									if(type===0){
-									  that.uploadImgUrl = JSON.parse(res1.data).url;
-									}else{
-									  that.uploadImgUrl2 = JSON.parse(res1.data).url;
-									}
+									that.uploadImgUrl = JSON.parse(res1.data).url; 
 								},
 								fail(err){
 									console.log(err)
@@ -225,16 +241,15 @@
 			},
 		},
 		onLoad(query){
+			console.log(query)
 		  this.showPosition = false;
 		  this.product = JSON.parse(query.product);
-	console.log(this.product)
-		  this.options = JSON.parse(this.product.goodsMaintainOption);
+		  
+		  // this.options = this.product.goodsMaintainOption.split('，');
 		  this.option = '';
 		  this.remark = '';
 		  this.uploadImgUrl = '';
-		  this.uploadImgUrl2 = '';
-		  this.number2 = '';
-		  this.number1 = '';
+		  this.id = query.id;
 		}
 	}
 </script>

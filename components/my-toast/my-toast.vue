@@ -1,7 +1,7 @@
 <template>
 	<view class="wyb-loading-box" @tap.stop.prevent @touchmove.stop.prevent>
 		<wyb-popup 
-		 ref="popup"
+		 ref="tpopup"
 		 type="center"
 		 :width="width"
 		 :height="height"
@@ -74,7 +74,7 @@
 				} else if (this.type === 'rectangle') {
 					return '150'
 				}
-			}
+			}  
 		},
 		props: {
 			title: {
@@ -124,14 +124,14 @@
 		},
 		methods: {
 			showLoading() {
-				this.$refs.popup.show()
+				this.$refs.tpopup.show()
 				setTimeout(() => {
-					this.$refs.popup.hide()
+					this.$refs.tpopup.hide()
 				}, 1500)
 			},
 			hideLoading() {
 				setTimeout(() => {
-					this.$refs.popup.hide()
+					this.$refs.tpopup.hide()
 				}, this.hideDelay)
 			},
 			onPopupShow() {

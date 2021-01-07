@@ -50,6 +50,11 @@ image {
   line-height: 96rpx;
   box-shadow: 0 4rpx 16rpx 0rpx #ff9b1f;
 }
+.bottom-banner {
+  margin-top: 40rpx;
+  border-radius: 24rpx;
+  overflow: hidden;
+}
 #integral .integralpage {
   position: relative;
   padding: 0 0 40rpx;
@@ -235,7 +240,7 @@ image {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
-  width: calc(100% - 120rpx);
+  width: calc(100% - 130rpx);
 }
 #integral .integralpage .put-item-img {
   width: 210rpx;
@@ -312,6 +317,17 @@ image {
   line-height: 58rpx;
   text-align: center;
   font-size: 24rpx;
+  border-radius: 30rpx;
+  color: #fff;
+}
+#integral .integralpage .put-integral-content .get-btn {
+  background: -webkit-linear-gradient(left, #ffa929, #ff831f);
+  background: linear-gradient(left, #ffa929, #ff831f);
+  width: 120rpx;
+  height: 58rpx;
+  line-height: 58rpx;
+  text-align: center;
+  font-size: 20rpx;
   border-radius: 30rpx;
   color: #fff;
 }
